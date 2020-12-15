@@ -1,3 +1,15 @@
+<?php
+$sql = "SELECT * FROM test WHERE id=(SELECT MAX(id) FROM test)";
+include($_SERVER['DOCUMENT_ROOT'].'/Database/login.php');
+$db=connexion();
+$req = mysqli_query($db,$sql) or die(mysqli_error());
+while($data = mysqli_fetch_assoc($req)){
+  $s1 = $data["s1"];
+  $s2 = $data["s2"];
+  $vit = $data["vit"];
+  $dir = $data["dir"];
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,7 +17,6 @@
 	<title>Cube SA</title>
 	<link href="css/style.css" rel="stylesheet" >
 	<link rel="icon" type="image/jpg" href="./images/logoCubeSA.jpg" />
-	<script language="javascript" src="./js/horloge.js" ></script>
 	<script language="javascript" src="./js/gestionWEBSOCKET.js"></script>
 	<script language="javascript" src="./js/dessiner.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
@@ -52,10 +63,25 @@
 <p id="DirectionVent" class="etiquette"></p>
 </aside>
 <!--AFFICHAGE INFORMATION VOLET-->
-<aside id="schemaVolet"> <div class="separation"><a>Volet</a></div>
+<aside id="schemaVolet"> <div class="separation"><a>supervision</a></div>
 </br>
-<p id="nomMesure">angle :</p>
-<p id="positionVolet" class="etiquette"></p>
+<p id="nomMesure">R :</p>
+<p id="varR" class="etiquette"></p>
+</br></br>
+<p id="nomMesure">Rmax :</p>
+<p id="varRmax" class="etiquette"></p>
+</br></br>
+<p id="nomMesure">Rmin :</p>
+<p id="varRmin" class="etiquette"></p>
+</br></br>
+<p id="nomMesure">T :</p>
+<p id="varDeltaT" class="etiquette"></p>
+</br></br>
+<p id="nomMesure">Ton :</p>
+<p id="varTon" class="etiquette"></p>
+</br></br>
+<p id="nomMesure">Toff :</p>
+<p id="varToff" class="etiquette"></p>
 </br></br>
 <div>
 	<!-- Insertion du canvas pour le dessin du toit -->
