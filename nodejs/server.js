@@ -5,7 +5,7 @@ const fs = require('fs');
 const mysql = require('mysql');
 // ajout de socket.io
 const server = require('http').Server(app)
-const io = require('socket.io')(3001, {
+const io = require('socket.io')(8081, { //server ou 8081
   cors: {
   origin: "http://localhost",
   methods: ["GET", "POST"],
@@ -38,7 +38,7 @@ io.on('connection', (socket) =>{
 })
 
 // on change app par server
-server.listen(8081, function () {
+server.listen(8080, function () {
  console.log('Votre app est disponible sur localhost:8080 !')
 })
 
