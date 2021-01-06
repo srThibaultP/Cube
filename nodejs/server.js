@@ -35,7 +35,7 @@ app.get('/json', function (req, res) {
 
 // on change app par server
 server.listen(8081, function () {
- console.log('Votre app est disponible sur localhost:8080 !')
+ console.log('Serveur WebSocket disponible sur localhost:8081 !')
 })
 
 function dbupdate() {
@@ -43,11 +43,11 @@ function dbupdate() {
     if (err) throw err;
     connection.query("SELECT * FROM Modele", function (err, result, fields) {
       if (err) throw err;
-      console.log(result);
+//      console.log(result);
       bddparsed = JSON.stringify(result);
       fs.writeFile('bdd.json', bddparsed, (err) => {
         if (err) throw err;
-        console.log('writted');
+        console.log('Base de donnée mise à jour');
         connection.release();
       })
     })
@@ -58,17 +58,13 @@ function dbupdate() {
 io.on('connection', (socket) =>{
    console.log(`Connecté au client ${socket.id}`)
    // émission d'un évènement
-   io.emit('news','debut');
+   io.emit('status','Connecté au serveur WebSocket');
    dbupdate();
      fs.readFile('./bdd.json', function read(err, data) {
-       if (err) {
-         throw err;
-     }
-         const content = data;
-         const parsed = JSON.parse(content);
-//       console.log(content);
-         console.log(parsed);
-         io.emit('json',parsed);
+       if (err) throw err;
+       jsonparsed = JSON.parse(data)
+       io.emit('json',jsonparsed);
+       console.log(`${socket.id} à jour`);
    })
 })
          //setTimeout(dbupdate, 1000);
