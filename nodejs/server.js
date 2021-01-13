@@ -1,8 +1,8 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const app = express();
 const fs = require('fs');
 const mysql = require('mysql');
+const MySQLEvents = require('@rodrigogs/mysql-events');
 const server = require('http').Server(app)
 var bdddata = "./bdd.json"
 const io = require('socket.io')(server, {
@@ -20,35 +20,52 @@ var pool = mysql.createPool({
   database: "AssurVehicules"
 });
 
-// on change app par server
-server.listen(8081, function() {
-  console.log('Serveur WebSocket disponible sur localhost:8081 !')
-})
+const program = async () => {
+  connection = pool;
+  const instance = new MySQLEvents(connection, {
+    startAtEnd: true
+  });
 
-function dbupdate() {
-  pool.getConnection(function(err, connection) {
-    if (err) throw err;
-    connection.query("SELECT * FROM Modele", function(err, result, fields) {
-      if (err) throw err;
-      //      console.log(result);
-      bddparsed = JSON.stringify(result);
-      fs.writeFile('bdd.json', bddparsed, (err) => {
-        if (err) throw err;
-        console.log('Base de donnée mise à jour');
-        connection.release();
-      })
-    })
+  await instance.start();
+
+  instance.addTrigger({
+    name: 'monitoring all statments',
+    expression: 'AssurVehicules',
+    statement: MySQLEvents.STATEMENTS.ALL,
+    onEvent: e => {
+      dbupdate();
+    }
   })
+
+  instance.on(MySQLEvents.EVENTS.CONNECTION_ERROR, console.error);
+  instance.on(MySQLEvents.EVENTS.ZONGJI_ERROR, console.error);
+
 }
 
 io.on('connection', (socket) => {
   console.log(`Connecté au client ${socket.id}`)
   io.emit('status', 'Connecté au serveur WebSocket');
   dbupdate();
-  fs.readFile('./bdd.json', function read(err, data) {
-    if (err) throw err;
-    jsonparsed = JSON.parse(data)
-    io.emit('mysqlData', jsonparsed);
-    console.log(`${socket.id} à jour`);
-  })
 })
+
+
+
+server.listen(8081, function() {
+  console.log('Serveur WebSocket disponible sur localhost:8081 !')
+})
+program().catch(console.error);
+
+
+
+
+
+
+function dbupdate() {
+  pool.getConnection(function(err, connection) {
+    if (err) throw err;
+    connection.query("SELECT * FROM Modele", function(err, result, fields) {
+      if (err) throw err;
+      io.emit('mysqlData', result);
+    })
+  })
+}
