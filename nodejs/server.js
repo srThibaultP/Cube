@@ -1,10 +1,8 @@
 const express = require('express');
 const app = express();
-const fs = require('fs');
 const mysql = require('mysql');
 const MySQLEvents = require('@rodrigogs/mysql-events');
 const server = require('http').Server(app)
-var bdddata = "./bdd.json"
 const io = require('socket.io')(server, {
   cors: {
     origin: 'http://localhost',
@@ -13,7 +11,6 @@ const io = require('socket.io')(server, {
   }
 })
 var pool = mysql.createPool({
-  connexionLimit: 10,
   host: "localhost",
   user: "snir",
   password: "snirpass",
@@ -21,8 +18,7 @@ var pool = mysql.createPool({
 });
 
 const program = async () => {
-  connection = pool;
-  const instance = new MySQLEvents(connection, {
+  const instance = new MySQLEvents(pool, {
     startAtEnd: true
   });
 
@@ -41,6 +37,7 @@ const program = async () => {
   instance.on(MySQLEvents.EVENTS.ZONGJI_ERROR, console.error);
 
 }
+program().catch(console.error);
 
 io.on('connection', (socket) => {
   console.log(`Connecté au client ${socket.id}`)
@@ -53,7 +50,7 @@ io.on('connection', (socket) => {
 server.listen(8081, function() {
   console.log('Serveur WebSocket disponible sur localhost:8081 !')
 })
-program().catch(console.error);
+
 
 
 
@@ -62,10 +59,11 @@ program().catch(console.error);
 
 function dbupdate() {
   pool.getConnection(function(err, connection) {
-    if (err) throw err;
-    connection.query("SELECT * FROM Modele", function(err, result, fields) {
-      if (err) throw err;
+    if (err) throw err; //Pas de connection
+      connection.query("SELECT * FROM Modele", function(err, result, fields) {
       io.emit('mysqlData', result);
+      connection.release();
+      if (err) throw err;
     })
   })
 }
