@@ -60,10 +60,18 @@ server.listen(8081, function() {
 function dbupdate() {
   pool.getConnection(function(err, connection) {
     if (err) throw err; //Pas de connection
-      connection.query("SELECT * FROM Modele", function(err, result, fields) {
-      io.emit('mysqlData', result);
+
+    connection.query("SELECT * FROM Modele ORDER BY id_modele DESC LIMIT 1", function (err, pos) {
+      if (err) throw err;
+      io.emit('mysqlPos', pos);
+      console.log(pos);
       connection.release();
       if (err) throw err;
-    })
+    });
+    
+      connection.query("SELECT * FROM Modele", function(err, result) {
+        if (err) throw err;
+        io.emit('mysqlData', result);
+    });
   })
 }
