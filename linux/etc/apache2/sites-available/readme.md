@@ -1,1 +1,1 @@
-sudo apt install apache2 mod_proxy mod_proxy_wstunnel
+sudo a2enmod proxy rewrite proxy_http proxy_wstunnel
