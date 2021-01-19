@@ -1,0 +1,19 @@
+{
+    "cors": {
+        "origin": "http: //localhost",
+        "methods": [
+            "GET",
+            "POST"
+        ],
+        "credentials": true
+    },
+    "mysql": {
+        "host": "localhost",
+        "user": "snir",
+        "password": "snirpass",
+        "database": "AssurVehicules"
+    },
+    "mysqlTable": "Modele",
+    "mysqlId": "id_modele",
+    "port": "8080"
+}
