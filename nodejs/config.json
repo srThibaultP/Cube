@@ -1,6 +1,6 @@
 {
     "cors": {
-        "origin": "http: //localhost",
+        "origin": "http://localhost",
         "methods": [
             "GET",
             "POST"
