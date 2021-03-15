@@ -47,6 +47,7 @@ function clientwebupdate() {
     if (err) throw err; //Pas de connection
     connection.query("SELECT * FROM " + config.mysqlTable + " ORDER BY " + config.mysqlId + " DESC LIMIT 1", function (err, pos) {
       io.emit('mysqlPos', pos);
+      if (err) throw err;
       console.log(pos);
     });
     connection.query("SELECT * FROM " + config.mysqlTable, function (err, result) {

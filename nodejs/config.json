@@ -11,9 +11,9 @@
         "host": "localhost",
         "user": "snir",
         "password": "snirpass",
-        "database": "AssurVehicules"
+        "database": "cube"
     },
-    "mysqlTable": "Modele",
-    "mysqlId": "id_modele",
+    "mysqlTable": "difference",
+    "mysqlId": "id",
     "port": "8080"
 }
