@@ -11,9 +11,9 @@
         "host": "localhost",
         "user": "snir",
         "password": "snirpass",
-        "database": "cube"
+        "database": "BDDCube"
     },
-    "mysqlTable": "difference",
-    "mysqlId": "id",
-    "port": "8080"
+    "mysqlTable": "S",
+    "mysqlId": "ID",
+    "port": "1053"
 }
