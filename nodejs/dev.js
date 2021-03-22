@@ -44,7 +44,7 @@ function clientWebUpdate() {
   pool.getConnection(function (err, connection) {
     if (err) throw err; //Pas de connection
     connection.query(
-      "SELECT S.*, REGULATION.* FROM S INNER JOIN REGULATION ON S.ID = REGULATION.ID ORDER BY S.ID DESC LIMIT 1",
+      "SELECT S.*, REGULATION.* FROM S INNER JOIN REGULATION ORDER BY S.ID DESC LIMIT 1",
       function (err, result) {
         io.emit("mysqlData", result);
         //connection.release();
@@ -58,7 +58,7 @@ function variablesRegulation() {
   pool.getConnection(function (err, connection) {
     if (err) throw err;
     connection.query(
-      "SELECT S.*, REGULATION.* FROM S INNER JOIN REGULATION ON S.ID = REGULATION.ID ORDER BY S.ID DESC LIMIT 1",
+      "SELECT S.*, REGULATION.* FROM S INNER JOIN REGULATION ORDER BY S.ID DESC LIMIT 1",
       function (err, data) {
         io.emit("mysqlData", data);
       }
@@ -70,7 +70,7 @@ function circulateur10s1m() {
   pool.getConnection(function (err, connection) {
     if (err) throw err;
     connection.query(
-      "SELECT S.*, REGULATION.* FROM S INNER JOIN REGULATION ON S.ID = REGULATION.ID ORDER BY S.ID DESC LIMIT 1",
+      "SELECT S.*, REGULATION.* FROM S INNER JOIN REGULATION ORDER BY S.ID DESC LIMIT 1",
       function (err, data) {
         data = data[0];
         deltat = data.T1 - data.T2; //ΔT : la différence de température entre T1, la température de sonde « capteur thermique » S1 et T2, la température de la « sonde ballon » S2.
@@ -89,7 +89,7 @@ function circulateur10pcrequalrmax() {
   pool.getConnection(function (err, connection) {
     if (err) throw err;
     connection.query(
-      "SELECT S.*, REGULATION.* FROM S INNER JOIN REGULATION ON S.ID = REGULATION.ID ORDER BY S.ID DESC LIMIT 1",
+      "SELECT S.*, REGULATION.* FROM S INNER JOIN REGULATION ORDER BY S.ID DESC LIMIT 1",
       function (err, data) {
         data = data[0];
         deltat = data.T1 - data.T2; //ΔT : la différence de température entre T1, la température de sonde « capteur thermique » S1 et T2, la température de la « sonde ballon » S2.
@@ -98,7 +98,7 @@ function circulateur10pcrequalrmax() {
           console.log("R=R + 10% toutes les minutes jusqu'à R=Rmax.");
         } else {
           console.log("hello");
-                  io.emit("status", "hello");
+          io.emit("status", "hello");
         }
       }
     );
@@ -109,7 +109,7 @@ function circulateuroff() {
   pool.getConnection(function (err, connection) {
     if (err) throw err;
     connection.query(
-      "SELECT S.*, REGULATION.* FROM S INNER JOIN REGULATION ON S.ID = REGULATION.ID ORDER BY S.ID DESC LIMIT 1",
+      "SELECT S.*, REGULATION.* FROM S INNER JOIN REGULATION ORDER BY S.ID DESC LIMIT 1",
       function (err, data) {
         data = data[0];
         deltat = data.T1 - data.T2; //ΔT : la différence de température entre T1, la température de sonde « capteur thermique » S1 et T2, la température de la « sonde ballon » S2.
