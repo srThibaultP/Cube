@@ -37,6 +37,7 @@ io.on("connection", (socket) => {
   io.emit("status", "Connecté au serveur WebSocket");
   clientWebUpdate();
   receptionClientInput(socket);
+  circulateur10pcrequalrmax();
 });
 
 function clientWebUpdate() {
@@ -95,6 +96,9 @@ function circulateur10pcrequalrmax() {
         if (deltat > 10) {
           //R=R + 10% toutes les minutes jusqu'à R=Rmax.
           console.log("R=R + 10% toutes les minutes jusqu'à R=Rmax.");
+        } else {
+          console.log("hello");
+                  io.emit("status", "hello");
         }
       }
     );
