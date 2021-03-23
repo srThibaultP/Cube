@@ -9,11 +9,11 @@
     },
     "mysql": {
         "host": "localhost",
-        "user": "snir",
-        "password": "snirpass",
+        "user": "root",
+        "password": "snir",
         "database": "BDDCube"
     },
     "mysqlTable": "S",
     "mysqlId": "ID",
-    "port": "1053"
+    "port": "4053"
 }
