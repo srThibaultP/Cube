@@ -22,7 +22,7 @@ const dbevent = async () => {
     expression: config.mysql.database,
     statement: MySQLEvents.STATEMENTS.ALL,
     onEvent: (e) => {
-      clientwebupdate();
+      clientWebUpdate();
     },
   });
 
@@ -47,6 +47,9 @@ function clientWebUpdate() {
       "SELECT S.*, REGULATION.* FROM S INNER JOIN REGULATION ORDER BY S.ID DESC LIMIT 1",
       function (err, result) {
         io.emit("mysqlData", result);
+        deltat = result[0].T1 - result[0].T2;
+        io.emit("deltat", deltat);
+        io.emit("")
         //connection.release();
         if (err) throw err;
       }
@@ -79,6 +82,7 @@ function circulateur10s1m() {
           console.log(
             "Le circulateur est mis en marche à R=Rmax pendant 10 secondes, puis à R=Rmin pendant 1 minute."
           );
+          circulateurStatus = 1;
         }
       }
     );
@@ -96,9 +100,9 @@ function circulateur10pcrequalrmax() {
         if (deltat > 10) {
           //R=R + 10% toutes les minutes jusqu'à R=Rmax.
           console.log("R=R + 10% toutes les minutes jusqu'à R=Rmax.");
-        } else {
-          console.log("hello");
-          io.emit("status", "hello");
+          while (data.R != data.Rmax) {
+            circulateur = circulateur * 1.1;
+          }
         }
       }
     );
