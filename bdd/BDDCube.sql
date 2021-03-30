@@ -1,220 +1,160 @@
--- phpMyAdmin SQL Dump
--- version 4.6.6deb5
--- https://www.phpmyadmin.net/
+-- MySQL dump 10.13  Distrib 5.5.62, for Win64 (AMD64)
 --
--- Host: localhost:3306
--- Generation Time: Mar 15, 2021 at 11:32 AM
--- Server version: 10.3.27-MariaDB-0+deb10u1
--- PHP Version: 7.3.27-1~deb10u1
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
+-- Host: localhost    Database: BDDCube
+-- ------------------------------------------------------
+-- Server version	5.5.5-10.3.25-MariaDB-0ubuntu0.20.04.1-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Database: `BDDCube`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `AGENDA`
---
-
-CREATE TABLE `AGENDA` (
-  `ID` int(11) NOT NULL,
-  `COND` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
 -- Table structure for table `CIRCUL`
 --
 
+DROP TABLE IF EXISTS `CIRCUL`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `CIRCUL` (
-  `ID` int(11) NOT NULL,
-  `R` float DEFAULT NULL,
-  `CHEMIN` tinyint(4) DEFAULT NULL
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `VILLE` varchar(50) DEFAULT NULL,
+  `TEMP` smallint(6) DEFAULT NULL,
+  `HUMIDITY` smallint(6) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- --------------------------------------------------------
+--
+-- Dumping data for table `CIRCUL`
+--
+
+LOCK TABLES `CIRCUL` WRITE;
+/*!40000 ALTER TABLE `CIRCUL` DISABLE KEYS */;
+/*!40000 ALTER TABLE `CIRCUL` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `METEO`
 --
 
+DROP TABLE IF EXISTS `METEO`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `METEO` (
-  `ID` int(11) NOT NULL,
-  `COND` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `DATE` datetime NOT NULL DEFAULT current_timestamp(),
+  `VILLE` text NOT NULL,
+  `TEMP` smallint(6) NOT NULL,
+  `HUMIDITY` smallint(6) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- --------------------------------------------------------
+--
+-- Dumping data for table `METEO`
+--
+
+LOCK TABLES `METEO` WRITE;
+/*!40000 ALTER TABLE `METEO` DISABLE KEYS */;
+/*!40000 ALTER TABLE `METEO` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `PARAMETRE`
 --
 
+DROP TABLE IF EXISTS `PARAMETRE`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `PARAMETRE` (
-  `ID` int(11) NOT NULL,
-  `R` int(11) DEFAULT NULL,
-  `Rmax` int(11) DEFAULT NULL,
-  `Rmin` int(11) DEFAULT NULL,
-  `Dt` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `R` smallint(6) NOT NULL,
+  `Rmax` smallint(6) NOT NULL,
+  `Dt` smallint(6) NOT NULL,
+  `ETAT` smallint(6) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- --------------------------------------------------------
+--
+-- Dumping data for table `PARAMETRE`
+--
+
+LOCK TABLES `PARAMETRE` WRITE;
+/*!40000 ALTER TABLE `PARAMETRE` DISABLE KEYS */;
+INSERT INTO `PARAMETRE` VALUES (1,10,29,77,2);
+/*!40000 ALTER TABLE `PARAMETRE` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `REGULATION`
 --
 
+DROP TABLE IF EXISTS `REGULATION`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `REGULATION` (
-  `ID` int(11) NOT NULL,
-  `Dton` int(11) DEFAULT NULL,
-  `Dtoff` int(11) DEFAULT NULL,
-  `Rmin` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `Dton` smallint(6) NOT NULL,
+  `Dtoff` smallint(6) NOT NULL,
+  `Rmin` smallint(11) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- --------------------------------------------------------
+--
+-- Dumping data for table `REGULATION`
+--
+
+LOCK TABLES `REGULATION` WRITE;
+/*!40000 ALTER TABLE `REGULATION` DISABLE KEYS */;
+INSERT INTO `REGULATION` VALUES (1,68,73,41);
+/*!40000 ALTER TABLE `REGULATION` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `S`
 --
 
+DROP TABLE IF EXISTS `S`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `S` (
-  `ID` int(11) NOT NULL,
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `T1` smallint(6) DEFAULT NULL,
-  `T2` smallint(6) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `T2` smallint(6) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `S`
 --
 
-INSERT INTO `S` (`ID`, `T1`, `T2`) VALUES
-(1, 25, 21),
-(2, 25, 21),
-(3, 25, 21),
-(4, 22, 21),
-(5, 22, 21),
-(6, 22, 21),
-(7, 22, 21),
-(8, 22, 21),
-(9, 22, 21),
-(10, 22, 21),
-(11, 22, 21),
-(12, 22, 21),
-(13, 22, 21),
-(14, 22, 21),
-(15, 22, 21),
-(16, 22, 21),
-(17, 22, 21),
-(18, 22, 21),
-(19, 22, 21),
-(20, 22, 21),
-(21, 22, 21),
-(22, 22, 21),
-(23, 22, 21),
-(24, 22, 21),
-(25, 22, 21),
-(26, 22, 21),
-(27, 22, 21),
-(28, 22, 21),
-(29, 22, 21),
-(30, 22, 21),
-(31, 21, 21),
-(32, 21, 21),
-(33, 21, 21),
-(34, 21, 21),
-(35, 21, 21),
-(36, 21, 21),
-(37, 21, 21),
-(38, 21, 21),
-(39, 21, 21),
-(40, 21, 21),
-(41, 21, 21),
-(42, 21, 21);
+LOCK TABLES `S` WRITE;
+/*!40000 ALTER TABLE `S` DISABLE KEYS */;
+INSERT INTO `S` VALUES (1,23,3),(2,23,3),(3,23,3),(4,23,3),(5,23,3),(6,23,3),(7,23,3),(8,23,3),(9,23,3),(10,23,3),(11,23,23),(12,23,23),(13,23,23),(14,23,23),(15,23,23),(16,23,23),(17,23,23),(18,23,19),(19,29,5),(20,100,23);
+/*!40000 ALTER TABLE `S` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
--- Indexes for dumped tables
+-- Dumping routines for database 'BDDCube'
 --
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
---
--- Indexes for table `AGENDA`
---
-ALTER TABLE `AGENDA`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `CIRCUL`
---
-ALTER TABLE `CIRCUL`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `METEO`
---
-ALTER TABLE `METEO`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `PARAMETRE`
---
-ALTER TABLE `PARAMETRE`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `REGULATION`
---
-ALTER TABLE `REGULATION`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `S`
---
-ALTER TABLE `S`
-  ADD PRIMARY KEY (`ID`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `AGENDA`
---
-ALTER TABLE `AGENDA`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `CIRCUL`
---
-ALTER TABLE `CIRCUL`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `METEO`
---
-ALTER TABLE `METEO`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `PARAMETRE`
---
-ALTER TABLE `PARAMETRE`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `REGULATION`
---
-ALTER TABLE `REGULATION`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `S`
---
-ALTER TABLE `S`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2021-03-30 17:44:36
