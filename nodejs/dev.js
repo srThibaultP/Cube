@@ -62,8 +62,24 @@ function clientWebUpdate() {
 }
 
 function ordreExecution() {
-  circulateur10s1m();
-  circulateur10pcrequalrmax();
+  if (circulateur10pcrequalrmax() != true) {
+    circulateur10s1m();
+  }
+}
+
+function circulateur10pcrequalrmax() {
+  pool.query(
+    "SELECT Dt FROM PARAMETRE WHERE ID = 1",
+    function (err, data) {
+      if (data[0].Dt > 10) {
+        //R=R + 10% toutes les minutes jusqu'à R=Rmax.
+        console.log("R=R + 10% toutes les minutes jusqu'à R=Rmax.");
+        io.emit("statusCirculateur", "R=R + 10% toutes les minutes jusqu'à R=Rmax.");
+        while (data.R != data.Rmax) circulateur = circulateur * 1.1;
+      } else io.emit("statusCirculateur", "STATUS DU SYSTEME");
+    }
+  );
+  return true;
 }
 
 function circulateur10s1m() {
@@ -75,28 +91,11 @@ function circulateur10s1m() {
         console.log(
           "Le circulateur est mis en marche à R=Rmax pendant 10 secondes, puis à R=Rmin pendant 1 minute."
         );
-        //circulateurStatus = 1; //VOIR STATUS AVEC JAOUEN ET NICO
-        io.emit("statusCirculateur", "Le circulateur est mis en marche à R=Rmax pendant 10 secondes, puis à R=Rmin pendant 1 minute.")
-
+        io.emit("statusCirculateur", "Le circulateur est mis en marche à R=Rmax pendant 10 secondes, puis à R=Rmin pendant 1 minute.");
       } else io.emit("statusCirculateur", "STATUS DU SYSTEME");
     }
   );
-}
-
-function circulateur10pcrequalrmax() {
-  pool.query(
-    "SELECT Dt FROM PARAMETRE WHERE ID = 1",
-    function (err, data) {
-      if (data[0].Dt > 10) {
-        //R=R + 10% toutes les minutes jusqu'à R=Rmax.
-        console.log("R=R + 10% toutes les minutes jusqu'à R=Rmax.");
-        io.emit("statusCirculateur", "R=R + 10% toutes les minutes jusqu'à R=Rmax.");
-        while (data.R != data.Rmax) {
-          circulateur = circulateur * 1.1;
-        }
-      } else io.emit("statusCirculateur", "STATUS DU SYSTEME");
-    }
-  );
+  return true;
 }
 
 function circulateuroff() {
