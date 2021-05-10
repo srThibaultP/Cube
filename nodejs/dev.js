@@ -4,10 +4,21 @@ const mysql = require("mysql");
 const MySQLEvents = require("@rodrigogs/mysql-events");
 const server = require("http").Server(express);
 const io = require("socket.io")(server, config.cors);
+const SerialPort = require('serialport');
 var pool = mysql.createPool(config.mysql);
+var sp = new SerialPort("/dev/ttyACM0", {
+  baudrate: 9600,
+  parser: serialport.parsers.readline("\n")
+});
 
 server.listen(config.port, function () {
   console.log("Serveur WebSocket disponible sur localhost:" + config.port);
+});
+
+sp.on("open", function () {
+  sp.write("255", function (err, res) {
+    if (err) return console.log(err);
+  });
 });
 
 const dbevent = async () => {
