@@ -7,18 +7,11 @@ const io = require("socket.io")(server, config.cors);
 const SerialPort = require('serialport');
 var pool = mysql.createPool(config.mysql);
 var sp = new SerialPort("/dev/ttyACM0", {
-  baudrate: 9600,
-  parser: serialport.parsers.readline("\n")
+  baudRate: 9600,
 });
 
 server.listen(config.port, function () {
   console.log("Serveur WebSocket disponible sur localhost:" + config.port);
-});
-
-sp.on("open", function () {
-  sp.write("255", function (err, res) {
-    if (err) return console.log(err);
-  });
 });
 
 const dbevent = async () => {
@@ -78,19 +71,23 @@ function ordreExecution() {
   }
 }
 
-function circulateur10pcrequalrmax() {
+function circulateuroff() {
   pool.query(
-    "SELECT Dt FROM PARAMETRE WHERE ID = 1",
+    "SELECT S.*, REGULATION.* FROM S INNER JOIN REGULATION ORDER BY S.ID DESC LIMIT 1",
     function (err, data) {
-      if (data[0].Dt > 10) {
-        //R=R + 10% toutes les minutes jusqu'à R=Rmax.
-        console.log("R=R + 10% toutes les minutes jusqu'à R=Rmax.");
-        io.emit("statusCirculateur", "R=R + 10% toutes les minutes jusqu'à R=Rmax.");
-        while (data.R != data.Rmax) circulateur = circulateur * 1.1;
-      } else io.emit("statusCirculateur", "STATUS DU SYSTEME");
+      data = data[0];
+      deltat = data.T1 - data.T2; //ΔT : la différence de température entre T1, la température de sonde « capteur thermique » S1 et T2, la température de la « sonde ballon » S2.
+      if (deltat < data.Dtoff) {
+        //Le circulateur est mise à l'arrêt.
+        console.log("Le circulateur est mise à l'arrêt.");
+        sp.on("open", function () {
+          sp.write("1", function (err, res) {
+            if (err) return console.log(err);
+          });
+        });
+      }
     }
   );
-  return true;
 }
 
 function circulateur10s1m() {
@@ -103,24 +100,37 @@ function circulateur10s1m() {
           "Le circulateur est mis en marche à R=Rmax pendant 10 secondes, puis à R=Rmin pendant 1 minute."
         );
         io.emit("statusCirculateur", "Le circulateur est mis en marche à R=Rmax pendant 10 secondes, puis à R=Rmin pendant 1 minute.");
+        sp.on("open", function () {
+          sp.write("2", function (err, res) {
+            if (err) return console.log(err);
+          });
+        });
       } else io.emit("statusCirculateur", "STATUS DU SYSTEME");
     }
   );
   return true;
 }
 
-function circulateuroff() {
+function circulateur10pcrequalrmax() {
   pool.query(
-    "SELECT S.*, REGULATION.* FROM S INNER JOIN REGULATION ORDER BY S.ID DESC LIMIT 1",
+    "SELECT Dt FROM PARAMETRE WHERE ID = 1",
     function (err, data) {
-      data = data[0];
-      deltat = data.T1 - data.T2; //ΔT : la différence de température entre T1, la température de sonde « capteur thermique » S1 et T2, la température de la « sonde ballon » S2.
-      if (deltat < data.Dtoff) {
-        //Le circulateur est mise à l'arrêt.
-        console.log("Le circulateur est mise à l'arrêt.");
-      }
+      if (data[0].Dt > 10) {
+        //R=R + 10% toutes les minutes jusqu'à R=Rmax.
+        console.log("R=R + 10% toutes les minutes jusqu'à R=Rmax.");
+        io.emit("statusCirculateur", "R=R + 10% toutes les minutes jusqu'à R=Rmax.");
+        while (data.R != data.Rmax) {
+          circulateur = circulateur * 1.1;
+          sp.on("open", function () {
+            sp.write("1", function (err, res) {
+              if (err) return console.log(err);
+            });
+          });
+        }
+      } else io.emit("statusCirculateur", "STATUS DU SYSTEME");
     }
   );
+  return true;
 }
 
 function receptiondton(socket) {
