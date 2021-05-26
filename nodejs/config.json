@@ -1,19 +1,16 @@
 {
-    "cors": {
-        "origin": "http://localhost",
-        "methods": [
-            "GET",
-            "POST"
-        ],
-        "credentials": true
-    },
-    "mysql": {
-        "host": "localhost",
-        "user": "root",
-        "password": "snir",
-        "database": "BDDCube"
-    },
-    "mysqlTable": "S",
-    "mysqlId": "ID",
-    "port": "4053"
+  "cors": {
+    "origin": "http://localhost",
+    "methods": ["GET", "POST"],
+    "credentials": true
+  },
+  "mysql": {
+    "host": "localhost",
+    "user": "root",
+    "password": "snir",
+    "database": "BDDCube"
+  },
+  "mysqlTable": "S",
+  "mysqlId": "ID",
+  "port": "4053"
 }
