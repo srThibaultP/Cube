@@ -1,0 +1,17 @@
+{
+  "name": "projetccf",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "googleapis": "^39.2.0",
+    "node-global-proxy": "^1.0.1",
+    "prompt-sync": "^4.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Arthur Claret",
+  "license": "ISC"
+}

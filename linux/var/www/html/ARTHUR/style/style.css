@@ -1,0 +1,254 @@
+/*html,
+
+/* render html5 elements as block */
+header, section, article, footer {
+	display: block;
+	/* padding: 0; */
+	color:#413e3e;
+	font-family: verdana, arial;
+
+}
+p#nomMesure{
+margin: 10px,10px,10px,10px;
+padding: 10px;
+margin-top:25px;
+}
+p#presentationVille{
+font-size: 20px;
+text-align:center;
+font-family: 'montserrat', sans-serif;
+}
+
+.LogoSN {
+    right: 20px;
+    top: 25px;
+}
+
+.retour{
+	margin-top:9px;
+	margin-right: 20px;
+}
+/*BODY*/
+body{
+	padding:20px;
+	font-size:12px;
+	overflow-x:hidden;
+	text-align:center;
+	background-color:#CECECE;
+}
+/*HEADER*/
+header{
+	width:100%;
+	height:20%;
+	margin:0 auto;
+	text-align:center;
+	border : 0px solid #a29d9d;
+	font-size:30px;
+	padding:30px 0px;
+	border-radius: 6px;
+}
+
+/*END HEADER*/
+/*NAVIGATOR*/
+nav{
+	width:100%;
+	height:70px;
+	font-size: 15px;
+	border : 1px solid #a29d9d;
+	background-color: #e7e7e7;
+	text-align: center;
+	border-radius: 6px;
+
+}
+
+#dim {
+	max-width: 300px;
+	max-height: 800px;
+}
+
+/*ASIDE*/
+
+.separation{
+	border-bottom:solid #a29d9d 1px;
+	padding:10px 10px;
+}
+aside{
+	height:500px;
+	border: 1px solid #a29d9d;
+	margin:auto 0px 10px 0px;
+	background-color: #e7e7e7;
+	font-size: 12px;
+  margin-top: -25.5%;
+	border-radius: 6px;
+	margin-left: 29%;
+}
+aside#VENT{
+	width:25%;
+	float:left;
+	height: 300px;
+}
+aside#TEMP{
+	width:25%;
+	float:left;
+	margin: right;
+	height: 540px;
+}
+aside#schemaVolet{
+	width:800px;
+	height: 430px;
+	margin-right: 0;
+	background-image: url('../images/bg.jpg');
+	border-radius: 20px;
+}
+
+.etiquette{
+		height: 150px;
+		width: 150px;
+	    display: inline ;
+	    min-width: 100px;
+	    padding: 10px 10px;
+	    font-size: 20px;
+	    color: #5c5c5c;
+	    line-height: 1;
+	    vertical-align: baseline;
+	    white-space: nowrap;
+	    text-align: center;
+	    background-color: #d7dee1;
+	    border-radius: 10px;
+	    border: 1px solid #b4a1a1;
+}
+
+
+/*SECTION recherche*/
+
+
+@font-face {
+	font-family: 'dosis';
+	src: local('dosis');
+	src: local('dosis.ttf');
+	src: local('../css/dosis.ttf');
+	src: local('/dosis.ttf');
+	src: url('dosis.ttf');
+	src: url('/dosis.ttf');
+	src: url('../dosis.ttf');
+
+}
+
+/*FOOTER*/
+.footer{
+	width:100%;
+	height: 110%;
+	min-height:20px;
+  margin-top: 5%;
+	border: 1px solid #a29d9d;
+	clear:both;
+	background-color: #e7e7e7;
+	position:relative;
+	padding: auto;
+	color:black;
+	font-size: 10px;
+	border-radius: 6px;
+	font-size:15px;
+
+}
+
+/*END FOOTER*/
+
+/*meteo*/
+
+.meteo{
+	width:100%;
+	height:150px;
+	font-size: 15px;
+	border : 1px solid #a29d9d;
+	margin:auto 0px 10px 0px;
+	background-color: #e7e7e7;
+	text-align: center;
+	border-radius: 6px;
+}
+
+/*end meteo*/
+
+/* switch round */
+
+.switchbox {
+	margin-top: -40%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.switch {
+	position: relative;
+	display: inline-block;
+	width: 60px;
+	height: 34px;
+  }
+
+.switch input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+.slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc;
+	-webkit-transition: .4s;
+	transition: .4s;
+}
+
+.slider:before {
+	position: absolute;
+	content: "";
+	height: 26px;
+	width: 26px;
+	left: 4px;
+	bottom: 4px;
+	background-color: white;
+	-webkit-transition: .4s;
+	transition: .4s;
+}
+
+input:checked + .slider {
+	background-color: #2196F3;
+}
+
+input:focus + .slider {
+	box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+	-webkit-transform: translateX(26px);
+	-ms-transform: translateX(26px);
+	transform: translateX(26px);
+}
+
+.slider.round {
+	border-radius: 34px;
+}
+
+.slider.round:before {
+	border-radius: 50%;
+}
+
+/* switch round end */
+
+/* SLIDER */
+
+.slidecontainer {
+	width: 100%;
+}
+
+/* end slider */
+
+.textswitch{
+	display: flex;
+	justify-content: space-between;
+	margin-left: 40%;
+	margin-right: 38%;
+}

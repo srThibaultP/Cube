@@ -1,11 +1,3 @@
-<?php
-$conn = new mysqli("localhost", "root", "snir", "BDDCube");
-$sql = "SELECT * FROM REGULATION INNER JOIN S";
-$result = $conn->query($sql);
-$row = $result->fetch_assoc();
-//var_dump($row);
-?>
-
 <!DOCTYPE html>
 <html>
 
@@ -14,9 +6,9 @@ $row = $result->fetch_assoc();
 	<title>Cube SA</title>
 	<link href="css/style.css" rel="stylesheet">
 	<script src="/socket.io/socket.io.js"></script>
-	<script src="js/edit.js"></script>
-	<script src="js/status.js"></script>
-	<script src="js/jquery.min.js"></script>
+	<script src="./js/edit.js"></script>
+	<script src="/js/status.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
 
 <body>
@@ -31,27 +23,6 @@ $row = $result->fetch_assoc();
 		socket.on('customData', function(msg) {
 			customData(msg);
 		});
-		socket.on('dton', function(msg) {
-			updatedton(msg);
-		});
-		socket.on('dtoff', function(msg) {
-			updatedtoff(msg);
-		});
-		socket.on('rmin', function(msg) {
-			updatermin(msg);
-		});
-		socket.on('dt', function(msg) {
-			updatedt(msg);
-		});
-		socket.on('Tpanneau', function(msg) {
-			updateTpanneau(msg);
-		});
-		socket.on('Tballon', function(msg) {
-			updateTballon(msg);
-		});
-		socket.on('statusCirculateur', function(msg) {
-			statusCirculateur(msg);
-		});
 	</script>
 	<header>
 		<img src="./images/logoCubeSA.jpg" alt=logoCubeSA width=50px height=50px align="left">
@@ -60,116 +31,70 @@ $row = $result->fetch_assoc();
 
 
 	<aside id="parametres">
+		<br>
+		<form>
+			<label>delta Ton</label>
+			<input type="number" id="dton" min="0" max="999">
+			<input type="button" value="Modifier" onClick="sendData('dton')">
+		</form>
+		<form>
+			<label>delta Toff</label>
+			<input type="number" id="dtoff" min="0" max="999">
+			<input type="button" value="Modifier" onClick="sendData('dtoff')">
+		</form>
+		<form>
+			<label>Rmin</label>
+			<input type="number" id="rmin" min="0" max="999">
+			<input type="button" value="Modifier" onClick="sendData('rmin')">
+		</form>
+
 		<script>
 			$(function() {
-				var slider = document.getElementById('dtonSlider');
+
+				// Installation d'un écouteur sur le slider
+				var slider = document.getElementById('lightSlider');
 				slider.addEventListener('input', function() {
-					setFade(slider.value);
+						setFade(slider.value);
 				});
 
-				var setFade = function(fadeValue) {
-					socket.emit('dton', fadeValue);
+				var setFade = function (fadeValue) {
+						// La valeur lue dans le slider est convertie en caractère
+						var fadeAscii = String.fromCharCode(fadeValue);
+						// ... affichée sous le curseur
+						$('#log').html(fadeValue+" %");
+						// ... puis envoyée au serveur Node
+						socket.emit('dton', fadeValue);
+						console.log(fadeValue);
 				}
-				setFade(<?php echo $row["Dton"]; ?>);
+				// Initialisation
+				setFade(0);
 			});
-
-			$(function() {
-				var slider = document.getElementById('dtoffSlider');
-				slider.addEventListener('input', function() {
-					setFade(slider.value);
-				});
-
-				var setFade = function(fadeValue) {
-					socket.emit('dtoff', fadeValue);
-				}
-				setFade(<?php echo $row["Dtoff"]; ?>);
-			});
-
-			$(function() {
-				var slider = document.getElementById('rminSlider');
-				slider.addEventListener('input', function() {
-					setFade(slider.value);
-				});
-
-				var setFade = function(fadeValue) {
-					socket.emit('rmin', fadeValue);
-				}
-				setFade(<?php echo $row["Rmin"]; ?>);
-			});
-
-			$(function() {
-				var slider = document.getElementById('TpanneauSlider');
-				slider.addEventListener('input', function() {
-					setFade(slider.value);
-				});
-
-				var setFade = function(fadeValue) {
-					socket.emit('Tpanneau', fadeValue);
-				}
-				setFade(<?php echo $row["T1"]; ?>);
-			});
-
-			$(function() {
-				var slider = document.getElementById('TballonSlider');
-				slider.addEventListener('input', function() {
-					setFade(slider.value);
-				});
-
-				var setFade = function(fadeValue) {
-					socket.emit('Tballon', fadeValue);
-				}
-				setFade(<?php echo $row["T2"]; ?>);
-			});
-			
 		</script>
 
-		<tr>
-			<td><input id="dtonSlider" type="range" min="0" max="100" value="0" /></td>
-		</tr>
-		<tr>
-			<td>delta Ton</td>
-		</tr>
-		<tr>
-			<td><input id="dtoffSlider" type="range" min="0" max="100" value="0" /></td>
-		</tr>
-		<tr>
-			<td>delta Toff</td>
-		</tr>
-		<tr>
-			<td><input id="rminSlider" type="range" min="0" max="100" value="0" /></td>
-		</tr>
-		<tr>
-			<td>Rmin</td>
-		</tr>
-		<p>Sondes</p>
-		<tr>
-			<td><input id="TpanneauSlider" type="range" min="0" max="100" value="0" /></td>
-		</tr>
-		<tr>
-			<td>Tpanneau</td>
-		</tr>
-		<tr>
-			<td><input id="TballonSlider" type="range" min="0" max="100" value="0" /></td>
-		</tr>
-		<tr>
-			<td>Tballon</td>
-		</tr>
+					<tr>
+				<td><input id="lightSlider" type="range" min="0" max="100" value="0" /></td>
+			</tr>
+			<tr>
+				<td id="log">0 %</td>
+			</tr>
+
+
 
 	</aside>
 	<!--AFFICHAGE INFORMATION VOLET-->
 
 	<aside id="affichage">
-		<h1 id="statusCirculateur">STATUS DU SYSTEME</h1>
+	<h1 id="status">STATUS</h1>
 		<div>
-			<label>CALCUL DES SONDES T1 - T2 dt=</label>
+			<label>dt=</label>
 			<label id="dt">dt</label>
 		</div>
 		<div>
-			<label>SLIDER dton=</label>
+			<label>dton=</label>
 			<label id="Dton">dton</label>
 		</div>
 		<div>
-			<label>SLIDER dtoff=</label>
+			<label>dtoff=</label>
 			<label id="Dtoff">dtoff</label>
 		</div>
 		<div>
@@ -181,16 +106,21 @@ $row = $result->fetch_assoc();
 			<label id="Rmax">Rmax</label>
 		</div>
 		<div>
-			<label>CALCUL 30% DE Rmax SLIDER Rmin=</label>
+			<label>Rmin=</label>
 			<label id="Rmin">Rmin</label>
 		</div>
 		<div>
-			<label>Tpanneau (T1)=</label>
+			<label>T1=</label>
 			<label id="T1">T1</label>
 		</div>
 		<div>
-			<label>Tballon (T2)=</label>
+			<label>T2=</label>
 			<label id="T2">T2</label>
+		</div>
+		<div>
+		<label>ID=</label>
+		<label id="ID">ID</label>
+		<p>Bonjour. Souhaitez-vous consulter <a href="page2.html">la page 2</a> ?</p>
 		</div>
 	</aside>
 	<!--Fin de la partie aside-->

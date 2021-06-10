@@ -1,0 +1,79 @@
+    <html>
+    	<head>
+    		<meta charset='UTF-8'>
+    		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    		<script src="./socket.io/socket.io.js"></script>
+    		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    		<style>
+    			html {
+    				margin:20px;
+    			}
+    			table {
+    				width:450px;
+    			}
+    			td {
+    				padding:10px;
+    			}
+    			input[type="range"] {
+    				position: relative;
+    				margin-left: 1em;
+    			}
+    			input[type="range"]:after,
+    			input[type="range"]:before {
+    				position: absolute;
+    				top: 1em;
+    			}
+    			input[type="range"]:before {
+    				left:0em;
+    				content: attr(min);
+    			}
+    			input[type="range"]:after {
+    				right: 0em;
+    				content: attr(max);
+    			}
+    			#lightSlider:hover {
+    				cursor:pointer;
+    			}
+    			#log {
+    				text-align: center;
+    				color:red;
+    			}
+    		</style>
+     
+    		<script>
+    			$(function() {	
+    				var socket = io.connect('http://localhost:8080');
+     
+    				// Installation d'un écouteur sur le slider
+    				var slider = document.getElementById('lightSlider');
+    				slider.addEventListener('input', function() {
+    						setFade(slider.value);
+    				});
+     
+    				var setFade = function (fadeValue) { 
+    						// La valeur lue dans le slider est convertie en caractère
+    						var fadeAscii = String.fromCharCode(fadeValue);
+    						// ... affichée sous le curseur
+    						$('#log').html(fadeValue+" %");
+    						// ... puis envoyée au serveur Node
+    						socket.emit('message', fadeAscii);
+    				}
+    				// Initialisation
+    				setFade(0);
+    			});
+    		</script>
+    	</head>
+    	<body>
+    		<table>
+    			<tr>
+    				<td><input id="lightSlider" type="range" min="0" max="100" value="0" /></td>
+    			</tr>
+    			<tr>
+    				<td id="log"></script></td>
+    			</tr>
+    			<tr>
+    				<td>Déplacez le curseur pour faire varier la luminosité de la LED.</td>
+    			</tr>
+    		</table>
+    	</body>
+    </html>
